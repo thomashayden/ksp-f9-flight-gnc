@@ -1,3 +1,6 @@
+CLEARSCREEN.
+PRINT "Waiting for signal from stage 1".
+
 SET steer TO SHIP:FACING:VECTOR.
 LOCK STEERING TO steer.
 
@@ -6,26 +9,28 @@ SET recieved TO CORE:MESSAGES:POP.
 SET recievedSplit TO recieved:CONTENT:SPLIT("-").
 // Takes a message, the periapsis, and the apoapsis
 IF recievedSplit:LENGTH() = 3 AND recievedSplit[0] = "activate" {
-  STAGE. // I don't know
-  PRINT "Stage number 1".
-  WAIT 2.
   STAGE. // Stage-sep?
-  PRINT "Stage number 2".
+  PRINT "Stage number 1".
   WAIT 3.
   STAGE. // Activate engine?
-  PRINT "Stage number 3".
+  PRINT "Stage number 2".
   WAIT 2.
   STAGE. // Deploy fairing
-  PRINT "Stage number 4".
+  PRINT "Stage number 3".
 
   PRINT "Message recieved. Beginning program.".
   SET tPeriapsis TO recievedSplit[1]:TONUMBER().
   SET tApoapsis TO recievedSplit[2]:TONUMBER().
 
-  SET steer TO PROGRADE.
+  UNLOCK steering.
+  SAS on.
+  WAIT 0.5.
+  SET SASMODE TO "PROGRADE".
   LOCK THROTTLE TO 1.
   WAIT UNTIL APOAPSIS >= tApoapsis.
   LOCK THROTTLE TO 0.
+  SAS off.
+  LOCK steering TO steer.
 
   SET mu TO BODY:MU.
   SET radius TO BODY:RADIUS.
@@ -61,12 +66,10 @@ IF recievedSplit:LENGTH() = 3 AND recievedSplit[0] = "activate" {
 
   UNLOCK STEERING.
   SAS on.
-  RCS on.
   WAIT 0.01.
   SET SASMODE TO "MANEUVER".
 
   WAIT UNTIL startTime - TIME:SECONDS < 10 OR VANG(SHIP:FACING:VECTOR, n:BURNVECTOR) < 0.5.
-  RCS off.
 
   WAIT UNTIL TIME:SECONDS >= startTime.
   LOCK THROTTLE TO 1.
@@ -74,7 +77,6 @@ IF recievedSplit:LENGTH() = 3 AND recievedSplit[0] = "activate" {
   LOCK THROTTLE TO 0.
 
   SAS off.
-  LOCK STEERING TO steer.
 
 } ELSE {
   PRINT "Unexpected message: " + recieved:CONTENT.
