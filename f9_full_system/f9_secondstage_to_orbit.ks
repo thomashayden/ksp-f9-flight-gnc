@@ -14,9 +14,9 @@ IF recievedSplit:LENGTH() = 3 AND recievedSplit[0] = "activate" {
   WAIT 3.
   STAGE. // Activate engine?
   PRINT "Stage number 2".
-  WAIT 2.
-  STAGE. // Deploy fairing
-  PRINT "Stage number 3".
+  //WAIT 2.
+  //STAGE. // Deploy fairing
+  //PRINT "Stage number 3".
 
   PRINT "Message recieved. Beginning program.".
   SET tPeriapsis TO recievedSplit[1]:TONUMBER().
