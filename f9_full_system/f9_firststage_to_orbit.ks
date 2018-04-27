@@ -78,14 +78,16 @@ BRAKES on.
 LIST ENGINES in engines.
 
 FOR engine IN engines {
-  SET engine:thrustlimit TO 0.
+  engine:SHUTDOWN().
 }
-SET SHIP:PARTSTAGGED("center_engine")[0]:thrustlimit TO 100.
+SHIP:PARTSTAGGED("center_engine")[0]:ACTIVATE().
 
-SET stoppingDistance TO ((SHIP:VERTICALSPEED)^2) / (2 * ((SHIP:AVAILABLETHRUST / SHIP:MASS) - (CONSTANT:G * BODY:MASS / BODY:RADIUS^2))).
+LOCK stoppingDistance TO ((SHIP:VERTICALSPEED)^2) / (2 * ((SHIP:AVAILABLETHRUST / SHIP:MASS) - (CONSTANT:G * BODY:MASS / BODY:RADIUS^2))).
 
+PRINT "Waiting until close to ground".
 WAIT UNTIL trueRadar < 10000.
-WAIT UNTIL trueRadar <= stoppingDistance + (ABS(SHIP:VERTICALSPEED) * 3).
+PRINT "Waiting until stopping distance: " + stoppingDistance + (ABS(SHIP:VERTICALSPEED) * 3).
+WAIT UNTIL trueRadar <= (stoppingDistance + (ABS(SHIP:VERTICALSPEED) * 3)).
 UNTIL trueRadar / ABS(SHIP:VERTICALSPEED) < 3 {
   SET steer TO SRFRETROGRADE.
   SET thrott TO stoppingDistance / trueRadar.
