@@ -9,7 +9,7 @@ LOCK throttle TO thrott.
 LOCK steering TO steer.
 
 SET landingTarget TO SHIP:GEOPOSITION.
-SET radarOffset to 50.000.
+SET radarOffset to 48.8.
 LOCK trueRadar TO alt:radar - radarOffset.
 
 CLEARSCREEN.
@@ -60,6 +60,9 @@ IF P:CONNECTION:SENDMESSAGE(MESSAGE) {
   PRINT "Sent: " + message.
 }
 
+SET steer TO HEADING(90,190).
+RCS on.
+
 WAIT 20.
 
 IF ADDONS:TR:HASIMPACT = FALSE {
@@ -73,6 +76,8 @@ UNTIL landingTarget:LNG >= ADDONS:TR:IMPACTPOS:LNG {
 }
 SET thrott TO 0.
 
+SET steer TO SRFRETROGRADE.
+
 BRAKES on.
 
 LIST ENGINES in engines.
@@ -81,12 +86,14 @@ FOR engine IN engines {
   engine:SHUTDOWN().
 }
 SHIP:PARTSTAGGED("center_engine")[0]:ACTIVATE().
+SHIP:PARTSTAGGED("side_engine")[0]:ACTIVATE().
+SHIP:PARTSTAGGED("side_engine")[1]:ACTIVATE().
 
 LOCK stoppingDistance TO ((SHIP:VERTICALSPEED)^2) / (2 * ((SHIP:AVAILABLETHRUST / SHIP:MASS) - (CONSTANT:G * BODY:MASS / BODY:RADIUS^2))).
 
 PRINT "Waiting until close to ground".
 WAIT UNTIL trueRadar < 10000.
-PRINT "Waiting until stopping distance: " + stoppingDistance + (ABS(SHIP:VERTICALSPEED) * 3).
+PRINT "Waiting until stopping distance: " + stoppingDistance + (ABS(SHIP:VERTICALSPEED) * 2.5).
 WAIT UNTIL trueRadar <= (stoppingDistance + (ABS(SHIP:VERTICALSPEED) * 3)).
 UNTIL trueRadar / ABS(SHIP:VERTICALSPEED) < 3 {
   SET steer TO SRFRETROGRADE.
