@@ -12,5 +12,5 @@ Obviously you will need Kerbal Space Program, but you will also need the followi
 
 ## Setup
 A few changes have to be made before the script will work perfectly.
-First, you need to get the correct RO/RSS configuration file for the SpaceX pack. The one included might work, but I had to use this (ADD A LINK LATER) one.
-Second, you need to set the tag of the center engine to be "center_engine". This allows the script to throttle it independently of the others.
+- First, you need to get the correct RO/RSS configuration file for the SpaceX pack. The one included might work, but I had to use this (ADD A LINK LATER) one.
+- Second, you need to set the tag of the center engine to be "center_engine". This allows the script to throttle it independently of the others.
