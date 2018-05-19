@@ -16,3 +16,6 @@ A few changes have to be made before the script will work perfectly.
 - You need to set the tag of the center engine to be "center_engine". This allows the script to throttle it independently of the others.
 - You need to set two opposite side engines to be "side_engine". This allows the script to throttle them independently of the others.
 - Name the CPUs f9s1 and f9s2 respectively.
+
+
+[Demo](https://youtu.be/_5XsF0gx6xo)
