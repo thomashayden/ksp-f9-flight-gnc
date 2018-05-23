@@ -1,3 +1,5 @@
+RUN ONCE better_rcs.
+
 // Parameters for the flight
 SET tApoapsis TO 35786000.
 SET tPeriapsis TO 35786000.
