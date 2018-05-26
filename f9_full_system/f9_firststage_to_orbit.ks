@@ -67,6 +67,8 @@ RCS on.
 
 WAIT 20.
 
+// Orient the ship correctly
+
 IF ADDONS:TR:HASIMPACT = FALSE {
   PRINT "Uh-oh! Trajectories doesn't have an impact for some reason.".
 }
